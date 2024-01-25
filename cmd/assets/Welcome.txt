@@ -1,0 +1,59 @@
+*** You can use this field to enter text ***
+
+Welcome to PinGoTrace!
+
+This app was designed to simplify day-to-day work of system/network engineers.  
+
+Warning/Restrictions: 
+
+	1. This version only supports single instance of the app.
+	2. App requires administrative rights. 
+	3. Supports IPv4 only. 
+	4. Generating ICMP from higher stack level adds some latency RTT.
+ 
+
+
+Explanation of Menus:
+
+DOMAIN/IP PARSER
+	Parses hostnames or IPv4s from the text. It checks subtext between white spaces.   
+
+
+DNS/PTR
+	For each hostname or IPv4 parsed, performs DNS or PTR lookup and displays results.
+	Example input: 8.8.4.4; Example output: 8.8.4.4: dns.google
+	Example input: yahoo.com; Example output: yahoo.com: 98.137.11.164
+ 
+
+DNS/PTR to IP
+	For each DNS or PTR resolution, displays only corresponding IPv4 address.
+	Example input: google.com; Example output: 8.8.8.8
+	Example input: 4.4.4.4; Example output: 4.4.4.4
+
+
+Infinity PING
+	Parses the input and issue continuous Ping for each DNS or PTR resolution. Supports up to 30 continuous Pings to run concurrently. 
+
+
+TRACE
+	Parses the input and issues Traceroute for the first DNS or PTR resolution. 
+
+
+PINGOTRACE 
+	Parses the input and issues Traceroute for the first DNS or PTR resolution, upon completion starts continuous Ping against each live hop. 
+
+
+Infinity TRACE
+	Parses the input and issues continuous Traceroute for the first DNS or PTR resolution. 3 seconds delay is between each Traceroute.
+
+
+IPCONFIG 
+	Displays IP information of workstation. 
+
+
+CLEAR
+	Deletes previously entered text from the display. 
+
+
+Your feedback is appreciated: pingotrace@gmail.com
+
