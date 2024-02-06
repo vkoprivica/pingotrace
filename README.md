@@ -29,5 +29,6 @@ Displays IP information of the workstation.
 ## CLEAR
 Deletes previously entered text from the display.
 
-## Youtube:
+## More info:
+https://pingotrace.net
 https://youtu.be/5W5BGqkBl08?si=ekF8lYTfWpr2cITx
