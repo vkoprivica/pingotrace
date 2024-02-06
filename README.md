@@ -28,3 +28,6 @@ Displays IP information of the workstation.
 
 ## CLEAR
 Deletes previously entered text from the display.
+
+## Youtube:
+https://youtu.be/5W5BGqkBl08?si=ekF8lYTfWpr2cITx
