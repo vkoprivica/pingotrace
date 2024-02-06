@@ -31,4 +31,5 @@ Deletes previously entered text from the display.
 
 ## More info:
 https://pingotrace.net
+
 https://youtu.be/5W5BGqkBl08?si=ekF8lYTfWpr2cITx
