@@ -123,43 +123,30 @@ func DNSPTR(ctx context.Context, inputs []string) (map[string][]interface{}, []s
 // If an input is an IP address, it will perform a PTR lookup. Otherwise, it does a DNS lookup.
 // It returns a map containing the results and a slice of keys (inputs) in their original order.
 func DNSPTRtoIP(ctx context.Context, inputs []string) []string {
-	results := make(map[string][]interface{}) // Map to store the results
-	keys := make([]string, 0, len(inputs))    // Slice to track the order of inputs
-
-	var wg sync.WaitGroup // Synchronize goroutines
-	// Struct for passing results between goroutines
-	resultChan := make(chan struct {
-		key     string
+	type result struct {
+		index   int
 		address string
 		success bool
-	})
+	}
 
-	for _, input := range inputs {
-		// If the input is an IP address, perform PTR lookup
-		if CheckIPv4(input) {
-			wg.Add(1)
-			go func(input string) {
-				defer wg.Done()
-				ipAddr, success := input, true
-				resultChan <- struct {
-					key     string
-					address string
-					success bool
-				}{input, ipAddr, success}
-			}(input)
-		} else { // Otherwise, perform DNS lookup
-			wg.Add(1)
-			go func(input string) {
-				defer wg.Done()
-				ipAddr, success := DNSLookup(ctx, input)
-				resultChan <- struct {
-					key     string
-					address string
-					success bool
-				}{input, ipAddr, success}
-			}(input)
-		}
-		keys = append(keys, input) // Track the order of the inputs
+	results := make([]result, len(inputs)) // Use a slice to store results in order
+	var wg sync.WaitGroup
+	resultChan := make(chan result, len(inputs)) // Buffered channel
+
+	for i, input := range inputs {
+		wg.Add(1)
+		go func(i int, input string) {
+			defer wg.Done()
+			var res result
+			res.index = i // Capture the index
+			if CheckIPv4(input) {
+				res.address = input
+				res.success = true
+			} else {
+				res.address, res.success = DNSLookup(ctx, input)
+			}
+			resultChan <- res
+		}(i, input) // Pass the current index and input
 	}
 
 	// Goroutine to close the results channel once all lookups are done
@@ -168,15 +155,21 @@ func DNSPTRtoIP(ctx context.Context, inputs []string) []string {
 		close(resultChan)
 	}()
 
-	// Collect results from the channel
-	var ipAddresses []string
+	// Collect results
 	for res := range resultChan {
-		if CheckIPv4(res.address) && res.success {
+		results[res.index] = res // Place the result in its original position
+	}
+
+	// Construct the final slice of IP addresses, maintaining the original order
+	var ipAddresses []string
+	for _, res := range results {
+		if res.success {
 			ipAddresses = append(ipAddresses, res.address)
+		} else {
+			// Handle failed lookups if necessary
+			ipAddresses = append(ipAddresses, "Lookup failed")
 		}
-		results[res.key] = []interface{}{res.address, res.success}
 	}
 
 	return ipAddresses
-
 }

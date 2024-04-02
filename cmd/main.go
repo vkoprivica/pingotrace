@@ -27,7 +27,7 @@ func main() {
 	var cancelFuncs []context.CancelFunc
 
 	fyneApp := app.NewWithID("net.pingotrace")
-	win := fyneApp.NewWindow("PinGoTrace")
+	win := fyneApp.NewWindow("PinGoTrace v1.0.1")
 
 	// Disable this when compiling
 	defaultFont, err := os.ReadFile("cmd\\assets\\fonts\\AssociateSans-Regular.ttf")
@@ -148,6 +148,8 @@ func main() {
 				vBoxCenter.Add(entryField)
 			} else { // If there's some input to work with
 				// Update the top horizontal box layout
+				keys := make([]string, len(parsedInput))
+				copy(keys, parsedInput)
 				hBoxTop.RemoveAll()
 				hBoxTop = container.NewHBox(btDNSBack, layout.NewSpacer(), btDark, btLight)
 				mainBox = container.NewBorder(hBoxTop, nil, nil, nil, vBoxCenter)
@@ -182,12 +184,19 @@ func main() {
 				// Goroutine to process and display the fetched results
 				go func() {
 					results := <-resultsChan
-					resultText := ""
-					// Compile results into a readable format
-					for key, value := range results {
-						resultText += fmt.Sprintf("%s: %s\n", key, value[0])
+					var orderedResults []string // Slice to hold results in order
+
+					// Loop through the original inputs to maintain order
+					for _, key := range keys {
+						if result, ok := results[key]; ok {
+							// Assuming result is a struct or similar that includes the address and success status
+							orderedResults = append(orderedResults, fmt.Sprintf("%s: %s", key, result[0]))
+						}
 					}
-					entryField.SetText(resultText)
+
+					// Join the ordered results into a single string for display
+					resultText := strings.Join(orderedResults, "\n")
+					entryField.SetText(resultText) // Update the UI in the main goroutine if needed
 					doneChan <- true
 				}()
 

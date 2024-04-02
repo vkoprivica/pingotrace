@@ -21,8 +21,9 @@ This app was designed to simplify day-to-day work of system/network engineers.
 Warning/Restrictions: 
 
 	1. This version only supports single instance of the app.
-	2. Supports IPv4 only. 
-	3. Generating ICMP from higher stack level adds some latency RTT.
+	2. App requires administrative rights. 
+	3. Supports IPv4 only. 
+	4. Generating ICMP from higher stack level adds some latency RTT.
 	
 
 

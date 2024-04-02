@@ -4,5 +4,5 @@ Website = "https://pingotrace.net/"
   Icon = "assets/img/icon.png"
   Name = "PinGoTrace"
   ID = "net.pingotrace"
-  Version = "1.0.0"
-  Build = 13
+  Version = "1.0.1"
+  Build = 3
