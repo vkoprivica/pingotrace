@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"image/color"
 	"os"
-	"pingotrace/pingotrace"
+	"pingotrace/internal/pingotrace"
 	"strings"
 	"sync"
 	"time"
@@ -27,16 +27,16 @@ func main() {
 	var cancelFuncs []context.CancelFunc
 
 	fyneApp := app.NewWithID("net.pingotrace")
-	win := fyneApp.NewWindow("PinGoTrace v1.0.1")
+	win := fyneApp.NewWindow("PinGoTrace.1.0.1")
 
 	// Disable this when compiling
-	defaultFont, err := os.ReadFile("cmd\\assets\\fonts\\AssociateSans-Regular.ttf")
+	defaultFont, err := os.ReadFile("assets\\fonts\\AssociateSans-Regular.ttf")
 	if err != nil {
 		panic(err)
 	}
 	fontResource := fyne.NewStaticResource("Default Font", defaultFont)
-	welcomeText := pingotrace.ReadFile("cmd\\assets\\Welcome.txt")
-	licenseText := pingotrace.ReadFile("cmd\\assets\\License.txt")
+	welcomeText := pingotrace.ReadFile("assets\\Welcome.txt")
+	licenseText := pingotrace.ReadFile("assets\\License.txt")
 
 	// Enable this when compiling
 	// fontResource := fyne.Resource(resourceAssociateSansRegularTtf)

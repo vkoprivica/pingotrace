@@ -5,4 +5,4 @@ Website = "https://pingotrace.net/"
   Name = "PinGoTrace"
   ID = "net.pingotrace"
   Version = "1.0.1"
-  Build = 3
+  Build = 12
